@@ -1,0 +1,10 @@
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { CommandInteraction, MessageEmbed } = require("discord.js");
+
+module.exports = {
+  data: new SlashCommandBuilder(),
+  /**
+   *  @param {CommandInteraction} interaction
+   */
+  async execute(interaction) {},
+};

@@ -1,0 +1,20 @@
+{
+  "name": "Bot 24",
+  "version": "1.0.0",
+  "description": "Bot para jugar al 24",
+  "main": "src/index.js",
+  "author": "Nox-#7385",
+  "license": "ISC",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.30",
+    "discord.js": "^14.4.0",
+    "dotenv": "^10.0.0"
+  },
+  "scripts": {
+    "deploy": "node deployCommands",
+    "start": "node src/index"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
