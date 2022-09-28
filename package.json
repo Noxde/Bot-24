@@ -12,6 +12,7 @@
   },
   "scripts": {
     "deploy": "node deployCommands",
+    "deploy:guild": "node guildDeploy",
     "start": "node src/index"
   },
   "engines": {
