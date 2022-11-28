@@ -1,4 +1,4 @@
-const Canvas = require("@napi-rs/canvas");
+const Canvas = require("canvas");
 const fs = require("fs");
 
 class Juego {
@@ -93,7 +93,7 @@ class Juego {
         break;
     }
 
-    fs.writeFileSync(`./cartas.png`, await this.#canvas.encode("png"));
+    fs.writeFileSync(`./cartas.png`, await this.#canvas.toBuffer());
   }
 
   drawCards() {

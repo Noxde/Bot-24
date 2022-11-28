@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const {
-  CommandInteraction,
-  AttachmentBuilder,
-  EmbedBuilder,
-} = require("discord.js");
+const { CommandInteraction, EmbedBuilder } = require("discord.js");
 const Juego = require("../structures/Juego24");
 
 // const Canvas = require("@napi-rs/canvas");
