@@ -12,16 +12,6 @@ class Juego {
     this.#x = 208;
     this.#canvas = Canvas.createCanvas(this.#x * 2, this.#y * 2);
     this.#context = this.#canvas.getContext("2d");
-
-    this.#valores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-    this.#palos = ["oro", "copas", "espadas", "basto"];
-    this.#numeros = [
-      this.#valores[parseInt(Math.random() * this.#valores.length)],
-      this.#valores[parseInt(Math.random() * this.#valores.length)],
-      this.#valores[parseInt(Math.random() * this.#valores.length)],
-      this.#valores[parseInt(Math.random() * this.#valores.length)],
-    ];
   }
 
   async #drawCard(palo, numero, espacio) {
