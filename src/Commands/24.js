@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { CommandInteraction, EmbedBuilder } = require("discord.js");
+const { CommandInteraction } = require("discord.js");
 const Juego = require("../structures/Juego24");
 
 module.exports = {
@@ -11,66 +11,69 @@ module.exports = {
    */
   async execute(interaction) {
     await interaction.deferReply();
-    let {jugando} = interaction.client;
+    let { jugando } = interaction.client;
 
-    if(!jugando) {
+    if (!jugando) {
       interaction.client.jugando = true;
       const juego = new Juego();
       let numeros = juego.drawCards();
-      
+
       await interaction.editReply({
         files: ["./cartas.png"],
-        embeds: [
-          new EmbedBuilder()
-          .setImage(`attachment://cartas.png`)
-          .setColor("Green"),
-        ],
       });
 
       let collector = interaction.channel.createMessageCollector({
         time: 5 * 60 * 1000,
         dispose: true,
-        filter: (x) => x.content == "Pasar" || (/^\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*(?:\*\*\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*)?$/g).test(x.content)
-      })
+        filter: (x) =>
+          x.content.toLowerCase() == "pasar" ||
+          /^\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*(?:\*\*\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*)?$/g.test(
+            x.content
+          ),
+      });
 
       collector.on("collect", (m) => {
         let resultado = m.content;
-        if(resultado == "Pasar") {
+        if (
+          m.author == interaction.member.user &&
+          m.content.toLowerCase() == "pasar"
+        ) {
           collector.stop("Juego pasado");
           interaction.client.jugando = false;
-          return  m.reply({
-            content: "Chauuu"
-          })
+          return m.reply({
+            content: "Chauuu",
+          });
         }
         let flag = false;
 
         for (const numero of numeros) {
           if (!resultado.includes(numero)) {
             flag = false;
-            break
-          } 
+            break;
+          }
           flag = true;
         }
+        // Verifica que no hayan numeros de mas
+        resultado.match(/\d+/g).length > 4 ? (flag = false) : (flag = true);
 
-        if(flag) resultado = eval(resultado);
+        if (flag) resultado = eval(resultado);
 
-        if(resultado == 24) {
+        if (resultado == 24) {
           collector.stop("Juego resuelto");
           interaction.client.jugando = false;
-          
-          m.reply({
-            content: "Resuelto da 24"
-          })
-        }
-      })
-      collector.on("end", () => {
-        interaction.client.jugando = false; 
-      })
 
+          m.reply({
+            content: "Correcto",
+          });
+        }
+      });
+      collector.on("end", () => {
+        interaction.client.jugando = false;
+      });
     } else {
       await interaction.editReply({
-        content: "Anterior juego no resuelto"
-      })
+        content: "Anterior juego no resuelto",
+      });
     }
   },
 };
