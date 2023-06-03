@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const Command = require("./Command.js");
 const Event = require("./Events.js");
 
-const intents = new Discord.IntentsBitField([Discord.GatewayIntentBits.Guilds]);
+const intents = new Discord.IntentsBitField([Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.MessageContent]);
 
 const fs = require("fs");
 
