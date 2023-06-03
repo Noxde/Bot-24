@@ -27,7 +27,7 @@ module.exports = {
         dispose: true,
         filter: (x) =>
           x.content.toLowerCase() == "pasar" ||
-          /^\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*(?:\*\*\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*)?$/g.test(
+          /^\s*\(*\d{1,2}\)*\s*(?:(?:[+\-*/]|rt|lg)\s*\(*\d{1,2}\)*\s*)*(?:\*\*\s*\(*\d{1,2}\)*\s*(?:(?:[+\-*/]|rt|lg)\s*\(*\d{1,2}\)*\s*)*)?$/g.test(
             x.content
           ),
       });
@@ -55,6 +55,11 @@ module.exports = {
         }
         // Verifica que no hayan numeros de mas
         resultado.match(/\d+/g).length > 4 ? (flag = false) : (flag = true);
+        resultado = resultado.replace(/(\d+)rt(\d+)/, "Math.pow($2, 1/$1)");
+        resultado = resultado.replace(
+          /(\d+)lg(\d+)/,
+          "Math.log($2)/Math.log($1)"
+        );
 
         if (flag) resultado = eval(resultado);
 

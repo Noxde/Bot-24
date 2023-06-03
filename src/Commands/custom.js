@@ -64,6 +64,11 @@ module.exports = {
         }
         // Verifica que no hayan numeros de mas
         resultado.match(/\d+/g).length > 4 ? (flag = false) : (flag = true);
+        resultado = resultado.replace(/(\d+)rt(\d+)/, "Math.pow($2, 1/$1)");
+        resultado = resultado.replace(
+          /(\d+)lg(\d+)/,
+          "Math.log($2)/Math.log($1)"
+        );
 
         if (flag) resultado = eval(resultado);
 
