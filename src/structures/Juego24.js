@@ -6,7 +6,6 @@ class Juego {
   #x;
   #canvas;
   #context;
-  #valores;
   constructor() {
     this.#y = 319;
     this.#x = 208;
@@ -38,9 +37,13 @@ class Juego {
   }
 
   drawCards() {
+    let numeros = [];
     for (let i = 1; i <= 4; i++) {
-      this.#drawCard(Random.range(1, 4), Random.range(1, 12), i);
+      let numero = Random.range(1, 12);
+      this.#drawCard(Random.range(1, 4), numero, i);
+      numeros.push(numero);
     }
+    return numeros;
   }
 }
 
