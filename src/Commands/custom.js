@@ -36,7 +36,7 @@ module.exports = {
         dispose: true,
         filter: (x) =>
           x.content.toLowerCase() == "pasar" ||
-          /^\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*(?:\*\*\s*\(*\d{1,2}\)*\s*(?:[+\-*/]\s*\(*\d{1,2}\)*\s*)*)?$/g.test(
+          /^\(*\d{1,2}\)*(?:(?:[+\-*/]|rt|log)\(*\d{1,2}\)*)*(?:\*\*\(*\d{1,2}\)*(?:(?:[+\-*/]|rt|log)\(*\d{1,2}\)*)*)?$/g.test(
             x.content
           ),
       });
@@ -57,17 +57,19 @@ module.exports = {
 
         for (const numero of numeros) {
           if (!resultado.includes(numero)) {
-            flag = false;
-            break;
+            return (flag = false);
           }
           flag = true;
         }
         // Verifica que no hayan numeros de mas
         resultado.match(/\d+/g).length > 4 ? (flag = false) : (flag = true);
-        resultado = resultado.replace(/(\d+)rt(\d+)/, "Math.pow($2, 1/$1)");
         resultado = resultado.replace(
-          /(\d+)lg(\d+)/,
-          "Math.log($2)/Math.log($1)"
+          /(\([^()]*\)|\d{1,2})rt(\([^()]*\)|\d{1,2})/g,
+          "Math.pow($2, 1/$1)"
+        );
+        resultado = resultado.replace(
+          /(\([^()]*\)|\d{1,2})log(\([^()]*\)|\d{1,2})/g,
+          "Math.floor(Math.log($2)/Math.log($1))"
         );
 
         if (flag) resultado = eval(resultado);
