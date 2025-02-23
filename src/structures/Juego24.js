@@ -37,13 +37,27 @@ class Juego {
   }
 
   drawCards() {
-    let numeros = [];
-    for (let i = 1; i <= 4; i++) {
-      let numero = Random.range(1, 12);
-      this.#drawCard(Random.range(1, 4), numero, i);
-      numeros.push(numero);
+    // Load JSON dictionary from file
+    const rawData = fs.readFileSync('./src/Combinations/Combinations.json', 'utf8');
+    const dictionary = JSON.parse(rawData);
+    const numbers = [];
+
+    //Get numbers until they make a valid combination
+    let valid = false;
+    while (!valid) {
+        numbers.length = 0;
+        for (let i = 1; i <= 4; i++) {
+            numbers.push(Random.range(1, 12));
+        }
+        const sorted_numbers = [...numbers].sort((a, b) => a - b);
+        const key = `${sorted_numbers[0]} ${sorted_numbers[1]} ${sorted_numbers[2]} ${sorted_numbers[3]}`;
+        valid = dictionary[key];
     }
-    return numeros;
+
+    for (let i = 1; i <= 4; i++) {
+      this.#drawCard(Random.range(1, 4), numbers[i-1], i);
+    }
+    return numbers;
   }
 }
 
